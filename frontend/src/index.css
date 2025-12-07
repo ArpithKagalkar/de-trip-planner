@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global tweaks */
+body {
+  @apply bg-slate-900 text-slate-50 antialiased;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* Scrollbar for itinerary panel (optional but nice) */
+.markdown-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(71 85 105) transparent;
+}
+
+.markdown-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.markdown-scroll::-webkit-scrollbar-thumb {
+  background-color: rgb(71 85 105);
+  border-radius: 9999px;
+}
+
+/* Basic markdown styling (instead of @tailwind/typography plugin) */
+.markdown-body h1 {
+  @apply text-2xl font-semibold mb-3 mt-2;
+}
+
+.markdown-body h2 {
+  @apply text-xl font-semibold mb-2 mt-4;
+}
+
+.markdown-body h3 {
+  @apply text-lg font-semibold mb-1 mt-3;
+}
+
+.markdown-body p {
+  @apply mb-2 text-sm leading-relaxed text-slate-200;
+}
+
+.markdown-body ul {
+  @apply list-disc pl-5 mb-2 text-sm space-y-1 text-slate-200;
+}
+
+.markdown-body li {
+  @apply leading-relaxed;
+}
+
+.markdown-body strong {
+  @apply font-semibold text-slate-50;
+}
+
+.markdown-body code {
+  @apply text-xs bg-slate-800/70 px-1 py-0.5 rounded;
+}
