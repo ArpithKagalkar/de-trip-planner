@@ -49,6 +49,11 @@ def health():
     return {"status": "ok"}
 
 
+@app.get("/cities")
+def list_cities() -> list[str]:
+    """Return the list of cities with curated POIs."""
+    return _poi_repo.list_cities()
+
 @app.post("/plan", response_model=TravelPlanResponse)
 async def create_plan(req: TravelPlanRequest):
     try:

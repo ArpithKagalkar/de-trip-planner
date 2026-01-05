@@ -2,13 +2,17 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import type { TravelPlanRequest } from "../types";
 
+
+
 interface TripFormProps {
   onSubmit: (payload: TravelPlanRequest) => void;
   loading: boolean;
+  cities: string[]; // new
 }
 
-export function TripForm({ onSubmit, loading }: TripFormProps) {
-  const [city, setCity] = useState("Berlin");
+export function TripForm({ onSubmit, loading, cities }: TripFormProps) {
+  const defaultCity = cities[0] ?? "Berlin";
+  const [city, setCity] = useState(defaultCity);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [budget, setBudget] = useState(250);
@@ -32,6 +36,8 @@ export function TripForm({ onSubmit, loading }: TripFormProps) {
     onSubmit(payload);
   };
 
+  const cityOptions = cities.length > 0 ? cities : ["Berlin"];
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -51,12 +57,20 @@ export function TripForm({ onSubmit, loading }: TripFormProps) {
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="flex flex-col gap-1 text-sm">
           <span className="text-slate-300">City (Germany)</span>
-          <input
+          <select
             className="rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-50 outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-500/60"
             value={city}
             onChange={(e) => setCity(e.target.value)}
-            placeholder="Berlin, Munich, Hamburg..."
-          />
+          >
+            {cityOptions.map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))}
+          </select>
+          <span className="text-[11px] text-slate-500 mt-0.5">
+            Currently seeded with curated POIs for a few major cities.
+          </span>
         </label>
 
         <label className="flex flex-col gap-1 text-sm">
