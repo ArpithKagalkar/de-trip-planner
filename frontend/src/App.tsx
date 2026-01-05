@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TripForm } from "./components/TripForm";
 import { ItineraryView } from "./components/ItineraryView";
 import type { TravelPlanRequest, TravelPlanResponse } from "./types";
@@ -9,6 +9,23 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [itinerary, setItinerary] = useState<TravelPlanResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [cities, setCities] = useState<string[]>([]);
+
+  useEffect(() => {
+    // Load supported cities from backend
+    const loadCities = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/cities`);
+        if (!res.ok) return; // silent fail, fallback to defaults
+        const data: string[] = await res.json();
+        setCities(data);
+      } catch (err) {
+        console.error("Failed to load cities", err);
+      }
+    };
+
+    loadCities();
+  }, []);
 
   const handleSubmit = async (payload: TravelPlanRequest) => {
     setLoading(true);
@@ -62,7 +79,7 @@ function App() {
 
         {/* Main content: 2 columns */}
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1.7fr)] items-start">
-          <TripForm onSubmit={handleSubmit} loading={loading} />
+          <TripForm onSubmit={handleSubmit} loading={loading} cities={cities} />
 
           <div className="space-y-3">
             {error && (
@@ -74,7 +91,6 @@ function App() {
           </div>
         </div>
 
-        {/* Footer */}
         <footer className="mt-8 text-[11px] text-slate-500 flex justify-between flex-wrap gap-2">
           <span>v0.1 · local prototype</span>
           <span>Backend: FastAPI · Frontend: React + Vite + Tailwind</span>
